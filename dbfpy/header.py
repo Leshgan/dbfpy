@@ -126,9 +126,10 @@ class DbfHeader(object):
         _data = stream.read(1)
         while _data[0] != "\x0D":
             _data += stream.read(31)
-            _fld = fields.lookupFor(_data[11]).fromString(_data, _pos)
-            _obj._addField(_fld)
-            _pos = _fld.end
+            if _data[11] != '0':
+                _fld = fields.lookupFor(_data[11]).fromString(_data, _pos)
+                _obj._addField(_fld)
+                _pos = _fld.end
             _data = stream.read(1)
         return _obj
     fromStream = classmethod(fromStream)
